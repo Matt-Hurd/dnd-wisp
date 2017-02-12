@@ -101,7 +101,7 @@ def collect(q, results):
             header_info = {'User-Agent' : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"}
 
             bad = False
-            r = requests.head(row, headers=header_info, timeout=3)
+            r = requests.head(row, headers=header_info, timeout=1)
             for key in r.headers.keys():
                 if key.lower() == 'content-type' and not 'text/html' in r.headers[key]:
                     #print(r.headers)
@@ -109,7 +109,7 @@ def collect(q, results):
                     break
             if bad:
                 continue
-            r = requests.get(row, headers=header_info, timeout=3)
+            r = requests.get(row, headers=header_info, timeout=1)
             # r = requests.get("https://en.wikipedia.org/wiki/42_(school)", headers=header_info)
 
             # r = requests.get('https://gorails.com/', headers={'User-Agent' : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"})
