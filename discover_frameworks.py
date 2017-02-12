@@ -92,7 +92,7 @@ def collect(q, results):
     while True:
         try:
             row, id = q.get_nowait()
-            if "'" in row[1]:
+            if "'" in row[1] or 'tumblr' in row[1] or 'deviantart' in row[1]:
                 continue
             print("Popped", id, row)
         except Exception as e:
@@ -300,7 +300,7 @@ def collect(q, results):
             url_values = None
             found_urls = set()
             for i, link in enumerate(links):
-                if "'" in link:
+                if "'" in link or 'tumblr' in link or 'deviantart' in link:
                     continue
                 parsed = urlparse(link)    
                 if parsed.netloc:
@@ -342,7 +342,7 @@ conn = psycopg2.connect("dbname='dnd_database' user='postgres' host='138.197.194
 
 cur = conn.cursor()
 
-lim = 512
+lim = 128
 
 while True:
     threads = [None] * 32
