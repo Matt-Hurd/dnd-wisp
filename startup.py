@@ -17,7 +17,7 @@ sock = socket.socket(socket.AF_INET, # Internet
                      socket.SOCK_DGRAM) # UDP
 sock.bind(('', UDP_PORT))
 
-for x in range(8):
+for x in range(2):
     subprocess.Popen(["python3", "/root/dnd-wisp/discover_frameworks.py"])
 
 while True:
