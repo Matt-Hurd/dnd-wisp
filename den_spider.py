@@ -3,6 +3,13 @@
 from lxml import etree
 import requests
 from io import StringIO, BytesIO
+from urllib.parse import urlparse, parse_qs
+import psycopg2
+
+
+
+
+
 
 r = requests.get('https://www.squarespace.com/')
 
@@ -16,12 +23,13 @@ tree = etree.parse(StringIO(r.text), parser)
 
 root = tree.getroot()
 
-links = tree.xpath("//@href")
+links = tree.xpath("//a/@href")
 head = root.xpath("//head")
 metas = root.xpath("//head/meta") 
 
 
-print (root.tag)
+# print (root.tag)
+
 
 # a = dir(root)
 
@@ -29,22 +37,34 @@ print (root.tag)
 
 # print (root)
 print (links)
-print (head)
-print (metas)
+# print (head)
+# print (metas)
 
-print ()
+output = [{}]
 
-print (dir(links[0]))
+# print ()
+# print (dir(links[0]))
 
+# parsed_url = urlparse(links[0])
 
+# print ()
+# print ("link: {a}".format(a=links[0]))
+# print ("parsed_url: {b}".format(b=parsed_url))
+# # print (dir(parsed_url))
+# print ()
 
-# print (links[0].find())
+for i, link in enumerate(links):
+    parsed = urlparse(link)    
+    if parsed.netloc:
+        print("{i}: netloc: {v}".format(i=i, v=parsed.netloc))
+        print (parsed)
+        print ("url: {u}".format(u=link))
+        print ()
+
 
 # for index, link in enumerate(links):
-#     print ("{index}: tag: {a}, text: {b}".format(index=index, a=link.tag, b=link.text))
-
-#     for i, keys in enumerate(link.keys()):
-#         print ("\t{i}: {c} = '{d}'".format(i=i, c=keys, d=link.values()[i]))
+#     print ("links: {a}".format(a=link))
+#     print ("\tparsed: {b}".format(b=urlparse(link)))
 
 
 
