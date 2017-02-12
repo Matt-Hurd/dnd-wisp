@@ -92,7 +92,7 @@ def collect(q, results):
     while True:
         try:
             row, id = q.get_nowait()
-            if "'" in row[1] or 'tumblr' in row[1] or 'deviantart' in row[1]:
+            if "'" in row[1] or 'tumblr' in row[1] or 'deviantart' in row[1] or 'blogspot' in row[1]:
                 continue
             print("Popped", id, row)
         except Exception as e:
@@ -300,7 +300,7 @@ def collect(q, results):
             url_values = None
             found_new_urls = set()
             for i, link in enumerate(links):
-                if "'" in link or 'tumblr' in link or 'deviantart' in link:
+                if "'" in link or 'tumblr' in link or 'deviantart' in link or 'blogspot' in link:
                     continue
                 parsed = urlparse(link)    
                 if parsed.netloc:
@@ -351,7 +351,7 @@ while True:
     distinct = "select distinct on (domain) * from new_urls where scraped = '0' LIMIT {lim} OFFSET {offset};".format(lim=lim, offset=random_int)
     update_scraped = "update new_urls set scraped='1' where {temp};"
     q_reset_scraped = "update new_urls set scraped='0';"
-    
+
     cur.execute(distinct)
     rows = cur.fetchall()
 
