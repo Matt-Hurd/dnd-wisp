@@ -9,12 +9,13 @@ import psycopg2
 
 
 
-# conn = psycopg2.connect("dbname='dnd_database' user='postgres' host='138.197.194.84' password='4339cc5bcd3dde693e9e96925014f71b' port='2619'")
+# conn = psycopg2.connect("dbname='dnd_database' user='postgres' host='138.197.194.84' password='a54fd22438e9e5892c0921405e339e19' port='26606'")
 
 
 # cur = conn.cursor()
 
 # lim = 10
+# # reset_scraped = True;
 # reset_scraped = False;
 
 # distinct = "select distinct on (domain) * from urls where scraped = '0' limit {lim};".format(lim=lim)
@@ -29,12 +30,11 @@ import psycopg2
 
 
 
+# ids = ""
 # if (rows):
-#     ids = "id={idd}".format(idd=rows[0][0])
-
 #     for i, row in enumerate(rows):
 #         if (i == 0):
-#             print (i)
+#             ids = "id={idd}".format(idd=row[0])
 #         else:
 #             ids += "or id={idd}".format(idd=row[0])
 
@@ -45,8 +45,8 @@ import psycopg2
 #     conn.commit()
 
 
-#     print ("len: {l}".format(l=len(rows)))
-#     print (rows)
+#     # print ("len: {l}".format(l=len(rows)))
+#     # print (rows)
 
 # if (reset_scraped):
 #     cur.execute(q_reset_scraped)
