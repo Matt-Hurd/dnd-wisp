@@ -17,7 +17,7 @@ sock = socket.socket(socket.AF_INET, # Internet
 sock.bind(('', UDP_PORT))
 
 for x in range(16):
-    os.spawnl(os.P_DETACH, 'python3 /root/dnd-wisp/den_spider.py')
+    os.spawnl(os.P_NOWAIT, 'python3 /root/dnd-wisp/discover_framework.py')
 
 while True:
     data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
