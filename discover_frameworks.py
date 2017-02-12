@@ -4,114 +4,18 @@ from lxml import etree
 import requests
 from io import StringIO, BytesIO
 from urllib.parse import urlparse, parse_qs
-# import psycopg2
-
-
-
-
-# conn = psycopg2.connect("dbname='dnd_database' user='postgres' host='138.197.194.84' password='4339cc5bcd3dde693e9e96925014f71b' port='2619'")
-
-
-# cur = conn.cursor()
-
-# lim = 100
-
-# distinct = "select distinct on (domain) * from urls limit {lim};".format(lim=lim)
-# select = "select * from urls;"
-
-
-# cur.execute(select)
-
-
-    
-
-# rows = cur.fetchall()
-
-
-
-# print ("len: {l}".format(l=len(rows)))
-# print (rows)
-
-
-# # t.string   "url"
-# # t.string   "domain"
-# # t.string   "path"
-# # t.boolean  "scraped"
-# # t.integer  "counter"
-# # t.datetime "created_at", null: false
-# # t.datetime "updated_at", null: false
-# # t.index ["url"], name: "index_urls_on_url", using: :btree
-
-
-
-# insert = "INSERT INTO urls \
-# (url, domain, path, scraped, created_at, updated_at) \
-# VALUES ('{url_val}', '{domain_val}', '{path_val}', {scraped_val}, now(), now())\
-# ON CONFLICT (url) DO NOTHING;\
-# ".format(
-#     url_val=rows[0][1],
-#     domain_val=rows[0][2],
-#     path_val=rows[0][3],
-#     scraped_val=rows[0][4],
-# )
-
-# print (cur.execute(insert))
-
-# conn.commit()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-r = requests.get('https://gorails.com/', headers={'User-Agent' : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"})
+header_info = {'User-Agent' : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"}
+# r = requests.get('https://gorails.com/', headers={'User-Agent' : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"})
+# r = requests.get('http://www.imdb.com/')
+r = requests.get('http://finofilipino.org/')
+# r = requests.get('http://www.sephora.com/')
 # r = requests.get('https://paymentsplugin.com/demo/')
 # r = requests.get('https://bugzilla.mozilla.org/')
-# r = requests.get('https://css-tricks.com/')
-# r = requests.get('http://www.imdb.com/')
-# r = requests.get('http://finofilipino.org/')
-# r = requests.get('http://www.sephora.com/')
+# r = requests.get('https://css-tricks.com/', headers=header_info)
 
 parser = etree.HTMLParser()
-
-
 tree = etree.parse(StringIO(r.text), parser)
-
 root = tree.getroot()
-
-
-
-
-
-
-
 
 found_frameworks = set()
 
@@ -164,7 +68,9 @@ for framework_type, items in frameworks.items():
             if value in i:
                 found_frameworks.add(key)
 
-framework_str = " and ".join(["""%s='1'""" % (key) for key in found_frameworks])
+# framework_str = " and ".join(["%s='1'" % (key) for key in found_frameworks])
+# print(framework_keys)
+# print(framework_values)
 # print(found_frameworks)
 
 names = [
@@ -197,66 +103,19 @@ for meta in metas:
         if meta.attrib['property'] in properties:
             found_metas[meta.attrib['property']] = meta.attrib['content']
 
-meta_str = " and ".join(["""%s='%s'""" % (key, val) for key, val in found_metas.items()])
+
+framework_keys = ','.join(found_frameworks)
+framework_values = ','.join(["'1'"] * len(found_frameworks))
+
+meta_keys = ','.join(found_metas.keys())
+meta_values = ','.join(["'%s'" % x for x in found_metas.values()])
+
+print(framework_keys)
+print(framework_values)
+print(meta_keys)
+print(meta_values)
+
+# meta_str = " and ".join(["%s='%s'" % (key, val) for key, val in found_metas.items()])
 
 
-print(framework_str, "and", meta_str)
-
-# links = tree.xpath("//a/@href")
-# head = root.xpath("//head")
-# metas = root.xpath("//head/meta") 
-
-
-
-# print (links)
-
-# output = [{}]
-
-# for i, link in enumerate(links):
-#     parsed = urlparse(link)    
-#     if parsed.netloc:
-#         print("{i}: netloc: {v}".format(i=i, v=parsed.netloc))
-#         print (parsed)
-#         print ("url: {u}".format(u=link))
-        # print ()
-
-
-
-
-
-
-
-# nope
-
-# for index, link in enumerate(links):
-#     print ("links: {a}".format(a=link))
-#     print ("\tparsed: {b}".format(b=urlparse(link)))
-
-
-
-
-# for index, elm in enumerate(metas):
-    # print ("{index}: tag: {a}, text: {b}".format(index=index, a=elm.tag, b=elm.text))
-#     for i, keys in enumerate(elm.keys()):
-#         print ("\t{i}: {c} = '{d}'".format(i=i, c=keys, d=elm.values()[i]))
-    
-    
-
-# result = etree.tostring(tree.getroot(), pretty_print=True, method="html")
-# 
-# print ("dfaofhaodhfo")
-
-# print (result)
-
-
-
-
-
-
-
-
-
-
-
-
-
+# print(framework_str, "and", meta_str)
