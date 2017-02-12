@@ -92,7 +92,7 @@ def collect(q, results):
     while True:
         try:
             row, id = q.get_nowait()
-            if "'" in row[1] or 'tumblr' in row[1] or 'deviantart' in row[1]:
+            if "'" in row[1]:
                 continue
             print("Popped", id, row)
         except Exception as e:
