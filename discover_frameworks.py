@@ -91,7 +91,7 @@ from urllib.parse import urlparse, parse_qs
 
 
 
-r = requests.get('https://gorails.com/')
+r = requests.get('https://gorails.com/', headers={'User-Agent' : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"})
 # r = requests.get('https://paymentsplugin.com/demo/')
 # r = requests.get('https://bugzilla.mozilla.org/')
 # r = requests.get('https://css-tricks.com/')
