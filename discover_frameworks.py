@@ -323,7 +323,7 @@ conn = psycopg2.connect("dbname='dnd_database' user='postgres' host='138.197.194
 
 cur = conn.cursor()
 
-lim = 128
+lim = 32
 
 while True:
     random_int = random.random() * (120000 * random.random())

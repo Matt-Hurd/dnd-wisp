@@ -1,5 +1,6 @@
 import socket
 import os
+import subprocess
 
 UDP_IP = "10.138.144.76"
 UDP_PORT = 5005
@@ -16,8 +17,8 @@ sock = socket.socket(socket.AF_INET, # Internet
                      socket.SOCK_DGRAM) # UDP
 sock.bind(('', UDP_PORT))
 
-for x in range(16):
-    os.spawnl(os.P_NOWAIT, 'python3 /root/dnd-wisp/discover_frameworks.py')
+for x in range(8):
+    subprocess.Popen(["python3", "/root/dnd-wisp/discover_frameworks.py"])
 
 while True:
     data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
