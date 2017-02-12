@@ -164,7 +164,8 @@ for framework_type, items in frameworks.items():
             if value in i:
                 found_frameworks.add(key)
 
-print(found_frameworks)
+framework_str = " and ".join(["""%s='1'""" % (key) for key in found_frameworks])
+# print(found_frameworks)
 
 names = [
     'keywords',
@@ -195,8 +196,11 @@ for meta in metas:
     if 'property' in meta.attrib.keys():
         if meta.attrib['property'] in properties:
             found_metas[meta.attrib['property']] = meta.attrib['content']
-print(found_metas)
 
+meta_str = " and ".join(["""%s='%s'""" % (key, val) for key, val in found_metas.items()])
+
+
+print(framework_str, "and", meta_str)
 
 # links = tree.xpath("//a/@href")
 # head = root.xpath("//head")
