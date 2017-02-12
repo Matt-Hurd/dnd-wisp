@@ -323,7 +323,9 @@ conn = psycopg2.connect("dbname='dnd_database' user='postgres' host='138.197.194
 
 cur = conn.cursor()
 
-lim = 32
+lim = 128
+
+# threads = [None] * 32
 
 while True:
     random_int = random.random() * (21474836 * random.random())        
@@ -389,3 +391,4 @@ while True:
         scraped_insert = "INSERT INTO scraped_data {col} VALUES {val} ON CONFLICT (url) DO NOTHING;".format(col=scraped_columns, val=scraped_values)
         cur.execute(scraped_insert)
         conn.commit()
+conn.close()
