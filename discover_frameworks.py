@@ -326,7 +326,7 @@ cur = conn.cursor()
 lim = 32
 
 while True:
-    random_int = random.random() * (120000 * random.random())
+    random_int = random.random() * (21474836 * random.random())        
     distinct = "select distinct on (domain) * from urls where scraped = '0' LIMIT {lim} OFFSET {offset};".format(lim=lim, offset=random_int)
     update_scraped = "update urls set scraped='1' where {temp};"
     q_reset_scraped = "update urls set scraped='0';"
