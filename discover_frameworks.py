@@ -305,7 +305,7 @@ def collect(q, results):
                     continue
                 parsed = urlparse(link)
                 # print(parsed)
-                if parsed.netloc > 10:
+                if len(parsed.netloc) > 10:
                     try:
                         # print(parsed.netloc)
                         s = '.'.join(parsed.netloc.split(":")[0].split("/")[0].split(".")[1:])
