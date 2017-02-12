@@ -15,10 +15,11 @@ conn = psycopg2.connect("dbname='dnd_database' user='postgres' host='138.197.194
 cur = conn.cursor()
 
 lim = 10
+reset_scraped = False;
 
 distinct = "select distinct on (domain) * from urls where scraped = '0' limit {lim};".format(lim=lim)
-update_scraped = "update urls set scraped='1' where id in ();"
-
+update_scraped = "update urls set scraped='1' where {temp};"
+q_reset_scraped = "update urls set scraped='0';"
 
 
 
@@ -26,25 +27,30 @@ cur.execute(distinct)
 
 rows = cur.fetchall()
 
-ids = []
 
 
+if (rows):
+    ids = "id={idd}".format(idd=rows[0][0])
 
-place_holder = ','.join(['%s'] * len(rows))
+    for i, row in enumerate(rows):
+        if (i == 0):
+            print (i)
+        else:
+            ids += "or id={idd}".format(idd=row[0])
 
-for row in rows:
-    ids.append[row[0]]
-        
-    
+            
+    # print (update_scraped.format(temp=ids))
+    cur.execute(update_scraped.format(temp=ids))
 
-print (ids)
-
-
-# conn.commit()
+    conn.commit()
 
 
-print ("len: {l}".format(l=len(rows)))
-print (rows)
+    print ("len: {l}".format(l=len(rows)))
+    print (rows)
+
+if (reset_scraped):
+    cur.execute(q_reset_scraped)
+    conn.commit()
 
 
 # t.string   "url"
@@ -58,20 +64,20 @@ print (rows)
 
 
 
-# insert = "INSERT INTO urls \
-# (url, domain, path, scraped, created_at, updated_at) \
-# VALUES ('{url_val}', '{domain_val}', '{path_val}', {scraped_val}, now(), now())\
-# ON CONFLICT (url) DO NOTHING;\
-# ".format(
-#     url_val=rows[0][1],
-#     domain_val=rows[0][2],
-#     path_val=rows[0][3],
-#     scraped_val=rows[0][4],
-# )
+insert = "INSERT INTO urls \
+(url, domain, path, scraped, created_at, updated_at) \
+VALUES ('{url_val}', '{domain_val}', '{path_val}', {scraped_val}, now(), now())\
+ON CONFLICT (url) DO NOTHING;\
+".format(
+    url_val=rows[0][1],
+    domain_val=rows[0][2],
+    path_val=rows[0][3],
+    scraped_val=rows[0][4],
+)
 
-# print (cur.execute(insert))
+print (cur.execute(insert))
 
-# conn.commit()
+conn.commit()
 
 
 
@@ -121,19 +127,21 @@ print (rows)
 # head = root.xpath("//head")
 # metas = root.xpath("//head/meta") 
 
+# link_output = []
+# #     url_val=rows[0][1],
+# #     domain_val=rows[0][2],
+# #     path_val=rows[0][3],
+# #     scraped_val=rows[0][4],
 
-# print (links)
-
-# output = [{}]
 
 # for i, link in enumerate(links):
 #     parsed = urlparse(link)    
 #     if parsed.netloc:
-#         print("{i}: netloc: {v}".format(i=i, v=parsed.netloc))
-#         print (parsed)
-#         print ("url: {u}".format(u=link))
-#         print ()
+#         url = link.split('?')[0].split('#')[0]
+#         link_output.append({"url":url, "domain":parsed.netloc, "path":parsed.path, "scraped":'0'})
 
+
+# print (link_output)
 
 
 
