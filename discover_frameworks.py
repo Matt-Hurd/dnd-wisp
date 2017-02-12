@@ -91,12 +91,13 @@ from urllib.parse import urlparse, parse_qs
 
 
 
-# r = requests.get('https://gorails.com/')
+r = requests.get('https://gorails.com/')
 # r = requests.get('https://paymentsplugin.com/demo/')
 # r = requests.get('https://bugzilla.mozilla.org/')
-r = requests.get('https://css-tricks.com/')
+# r = requests.get('https://css-tricks.com/')
 # r = requests.get('http://www.imdb.com/')
 # r = requests.get('http://finofilipino.org/')
+# r = requests.get('http://www.sephora.com/')
 
 parser = etree.HTMLParser()
 
@@ -131,6 +132,7 @@ frameworks = {
         'django': 'csrfmiddlewaretoken',
         'infusionsoft': 'infusionsoft_version',
         'microsoft_asp_net': 'VIEWSTATE',
+        'oracle_commerce': '_dyncharset'
     },
     "//a/@href": {
         'bugzilla': 'enter_bug.cgi'
@@ -146,6 +148,9 @@ frameworks = {
     "//iframe/@src": {
         'tumblr': 'tumblr.com'
     },
+    "//a": {
+        'reddit': 'Powered by Reddit'
+    }
 }
 
 for framework_type, items in frameworks.items():
@@ -161,6 +166,36 @@ for framework_type, items in frameworks.items():
 
 print(found_frameworks)
 
+names = [
+    'keywords',
+    'description',
+    'author',
+    'twitter_site',
+    'twitter_title',
+    'twitter_description',
+    'twitter_image',
+    'twitter_creator',
+]
+
+properties = [
+    'og_title',
+    'og_url',
+    'og_description',
+    'og_image',
+    'og_site_name',
+]
+
+found_metas = {}
+
+metas = root.xpath("//head/meta") 
+for meta in metas:
+    if 'name' in meta.attrib.keys():
+        if meta.attrib['name'] in names:
+            found_metas[meta.attrib['name']] = meta.attrib['content']
+    if 'property' in meta.attrib.keys():
+        if meta.attrib['property'] in properties:
+            found_metas[meta.attrib['property']] = meta.attrib['content']
+print(found_metas)
 
 
 # links = tree.xpath("//a/@href")
