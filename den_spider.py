@@ -9,58 +9,124 @@ import psycopg2
 
 
 
+conn = psycopg2.connect("dbname='dnd_database' user='postgres' host='138.197.194.84' password='4339cc5bcd3dde693e9e96925014f71b' port='2619'")
 
 
-r = requests.get('https://www.squarespace.com/')
+cur = conn.cursor()
 
-# print (r.text)
+lim = 100
 
-
-parser = etree.HTMLParser()
-
-
-tree = etree.parse(StringIO(r.text), parser)
-
-root = tree.getroot()
-
-links = tree.xpath("//a/@href")
-head = root.xpath("//head")
-metas = root.xpath("//head/meta") 
+distinct = "select distinct on (domain) * from urls limit {lim};".format(lim=lim)
+select = "select * from urls;"
 
 
-# print (root.tag)
+cur.execute(select)
 
 
-# a = dir(root)
+    
 
-# print (a)
+rows = cur.fetchall()
 
-# print (root)
-print (links)
-# print (head)
-# print (metas)
 
-output = [{}]
 
-# print ()
-# print (dir(links[0]))
+print ("len: {l}".format(l=len(rows)))
+print (rows)
 
-# parsed_url = urlparse(links[0])
 
-# print ()
-# print ("link: {a}".format(a=links[0]))
-# print ("parsed_url: {b}".format(b=parsed_url))
-# # print (dir(parsed_url))
-# print ()
+# t.string   "url"
+# t.string   "domain"
+# t.string   "path"
+# t.boolean  "scraped"
+# t.integer  "counter"
+# t.datetime "created_at", null: false
+# t.datetime "updated_at", null: false
+# t.index ["url"], name: "index_urls_on_url", using: :btree
 
-for i, link in enumerate(links):
-    parsed = urlparse(link)    
-    if parsed.netloc:
-        print("{i}: netloc: {v}".format(i=i, v=parsed.netloc))
-        print (parsed)
-        print ("url: {u}".format(u=link))
-        print ()
 
+
+insert = "INSERT INTO urls \
+(url, domain, path, scraped, created_at, updated_at) \
+VALUES ('{url_val}', '{domain_val}', '{path_val}', {scraped_val}, now(), now())\
+ON CONFLICT (url) DO NOTHING;\
+".format(
+    url_val=rows[0][1],
+    domain_val=rows[0][2],
+    path_val=rows[0][3],
+    scraped_val=rows[0][4],
+)
+
+print (cur.execute(insert))
+
+conn.commit()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# r = requests.get('https://www.squarespace.com/')
+
+
+
+
+# parser = etree.HTMLParser()
+
+
+# tree = etree.parse(StringIO(r.text), parser)
+
+# root = tree.getroot()
+
+# links = tree.xpath("//a/@href")
+# head = root.xpath("//head")
+# metas = root.xpath("//head/meta") 
+
+
+# print (links)
+
+# output = [{}]
+
+# for i, link in enumerate(links):
+#     parsed = urlparse(link)    
+#     if parsed.netloc:
+#         print("{i}: netloc: {v}".format(i=i, v=parsed.netloc))
+#         print (parsed)
+#         print ("url: {u}".format(u=link))
+#         print ()
+
+
+
+
+
+
+
+# nope
 
 # for index, link in enumerate(links):
 #     print ("links: {a}".format(a=link))
