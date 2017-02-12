@@ -305,20 +305,21 @@ def collect(q, results):
                     continue
                 parsed = urlparse(link)
                 # print(parsed)
-                try:
-                    # print(parsed.netloc)
-                    s = '.'.join(parsed.netloc.split(":")[0].split("/")[0].split(".")[-2:])
-                    # print(s)
-                except Exception as e:
-                    # print(e)
-                    continue
-                # print(s)
-                if not s:
-                    continue
-                else:
-                    if s in seen:
+                if parsed.netloc > 10:
+                    try:
+                        # print(parsed.netloc)
+                        s = '.'.join(parsed.netloc.split(":")[0].split("/")[0].split(".")[1:])
+                        # print(s)
+                    except Exception as e:
+                        # print(e)
                         continue
-                    seen.add(s)
+                    # print(s)
+                    if not s:
+                        continue
+                    else:
+                        if s in seen:
+                            continue
+                        seen.add(s)
                 if parsed.netloc:
                     url = link.split('?')[0].split('#')[0]
                     if (url[0] == '/' and url[1]== '/'):            
