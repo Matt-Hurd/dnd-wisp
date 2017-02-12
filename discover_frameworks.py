@@ -4,6 +4,7 @@ from io import StringIO, BytesIO
 from urllib.parse import urlparse, parse_qs
 import psycopg2
 import threading
+import random
 
 
 possible_frameworks = [
@@ -325,7 +326,8 @@ cur = conn.cursor()
 lim = 128
 
 while True:
-    distinct = "select distinct on (domain) * from urls where scraped = '0' limit {lim};".format(lim=lim)
+    random_int = random.random() * (120000 * random.random())
+    distinct = "select distinct on (domain) * from urls where scraped = '0' LIMIT {lim} OFFSET {offset};".format(lim=lim, offset=random_int)
     update_scraped = "update urls set scraped='1' where {temp};"
     q_reset_scraped = "update urls set scraped='0';"
 
