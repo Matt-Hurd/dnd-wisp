@@ -95,6 +95,8 @@ from urllib.parse import urlparse, parse_qs
 # r = requests.get('https://paymentsplugin.com/demo/')
 # r = requests.get('https://bugzilla.mozilla.org/')
 r = requests.get('https://css-tricks.com/')
+# r = requests.get('http://www.imdb.com/')
+# r = requests.get('http://finofilipino.org/')
 
 parser = etree.HTMLParser()
 
@@ -121,7 +123,8 @@ frameworks = {
         'lightbox': 'lightbox',
         'materialize_css': 'materialize',
         'outlook_web_app': '/themes/resources/owafont',
-        'rdoc': 'rdoc-style.css'
+        'rdoc': 'rdoc-style.css',
+        'wordpress': 'wp-'
     },
     "//input/@name": {
         'stripe': 'fullstripe',
@@ -137,12 +140,18 @@ frameworks = {
         'segment': 'segment.com/analytics',
         'spree': 'Spree.'
     },
+    "//input/@value": {
+        'paypal': '_s-xclick'
+    },
+    "//iframe/@src": {
+        'tumblr': 'tumblr.com'
+    },
 }
 
 for framework_type, items in frameworks.items():
     inputs = tree.xpath(framework_type)
     for i in inputs:
-        if framework_type == '//script':
+        if not '@' in framework_type:
             i = i.text
             if not i:
                 continue
@@ -154,7 +163,7 @@ print(found_frameworks)
 
 
 
-links = tree.xpath("//a/@href")
+# links = tree.xpath("//a/@href")
 # head = root.xpath("//head")
 # metas = root.xpath("//head/meta") 
 
