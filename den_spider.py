@@ -113,6 +113,11 @@ def collect(row, cursor, db_conn):
             if meta.attrib['property'] in properties:
                 found_metas[meta.attrib['property']] = meta.attrib['content']
 
+    
+    
+
+    
+
 
     framework_keys = ', '.join(found_frameworks)
     framework_values = ', '.join(["'1'"] * len(found_frameworks))
