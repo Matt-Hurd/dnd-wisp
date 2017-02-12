@@ -298,7 +298,7 @@ def collect(q, results):
 
             links = tree.xpath("//a/@href")
             url_values = None
-            found_new_urls = set()
+            found_more_urls = set()
             seen = set()
             for i, link in enumerate(links):
                 if "'" in link or 'tumblr' in link or 'deviantart' in link or 'blogspot' in link:
@@ -326,8 +326,8 @@ def collect(q, results):
                     elif url[0] == '/':
                         url = url[1:]         
 
-                    if not (url in found_new_urls):
-                        found_new_urls.add(url)
+                    if not (url in found_more_urls):
+                        found_more_urls.add(url)
                         if not url_values:
                             url_values = "('{url_val}', '{domain_val}', '{path_val}', {scraped_val}, now(), now())".format(
                                 url_val=url,
@@ -364,9 +364,9 @@ while True:
     threads = [None] * 32
     results = [None] * lim
     random_int = random.random() * (4000000 * random.random())        
-    distinct = "select distinct on (domain) * from new_urls where scraped = '0' LIMIT {lim} OFFSET {offset};".format(lim=lim, offset=random_int)
-    update_scraped = "update new_urls set scraped='1' where {temp};"
-    q_reset_scraped = "update new_urls set scraped='0';"
+    distinct = "select distinct on (domain) * from more_urls where scraped = '0' LIMIT {lim} OFFSET {offset};".format(lim=lim, offset=random_int)
+    update_scraped = "update more_urls set scraped='1' where {temp};"
+    q_reset_scraped = "update more_urls set scraped='0';"
 
     cur.execute(distinct)
     rows = cur.fetchall()
@@ -420,8 +420,8 @@ while True:
     scraped_columns = "({list})".format(list=join_columns)
     url_columns = "(url, domain, path, scraped, created_at, updated_at)"
     if (url_values):
-        # #print ("new_urls found: {found}".format(found=len(found_new_urls)))
-        url_insert = "INSERT INTO new_urls {col} VALUES {val} ON CONFLICT (url) DO NOTHING;".format(col=url_columns, val=url_values)    
+        # #print ("more_urls found: {found}".format(found=len(found_more_urls)))
+        url_insert = "INSERT INTO more_urls {col} VALUES {val} ON CONFLICT (url) DO NOTHING;".format(col=url_columns, val=url_values)    
         cur.execute(url_insert)
         conn.commit()
     if (scraped_values):
