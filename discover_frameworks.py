@@ -342,7 +342,7 @@ conn = psycopg2.connect("dbname='dnd_database' user='postgres' host='138.197.194
 
 cur = conn.cursor()
 
-lim = 128
+lim = 512
 
 while True:
     threads = [None] * 32
