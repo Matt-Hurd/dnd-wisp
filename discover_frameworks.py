@@ -299,10 +299,26 @@ def collect(q, results):
             links = tree.xpath("//a/@href")
             url_values = None
             found_new_urls = set()
+            seen = set()
             for i, link in enumerate(links):
                 if "'" in link or 'tumblr' in link or 'deviantart' in link or 'blogspot' in link:
                     continue
-                parsed = urlparse(link)    
+                parsed = urlparse(link)
+                # print(parsed)
+                try:
+                    # print(parsed.netloc)
+                    s = '.'.join(parsed.netloc.split(":")[0].split("/")[0].split(".")[-2:])
+                    # print(s)
+                except Exception as e:
+                    # print(e)
+                    continue
+                # print(s)
+                if not s:
+                    continue
+                else:
+                    if s in seen:
+                        continue
+                    seen.add(s)
                 if parsed.netloc:
                     url = link.split('?')[0].split('#')[0]
                     if (url[0] == '/' and url[1]== '/'):            
